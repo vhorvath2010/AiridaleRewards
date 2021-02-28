@@ -1,0 +1,11 @@
+name: AiridaleRewards
+version: 1.0
+main: io.github.vhorvath2010.adrewards.ADRewards
+author: Vhbob
+api-version: 1.16
+commands:
+  likecheck:
+    description: Update your liked status
+  ResetLikes:
+    description: Reset all likes
+    permission: likes.reset

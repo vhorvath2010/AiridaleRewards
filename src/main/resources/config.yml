@@ -1,0 +1,8 @@
+# Each command under this section has a certain chance (out of 100) to fire. They are NOT mutually exclusive
+rewards:
+  1:
+    cmd: "give %player% diamond 10"
+    chance: 100
+  2:
+    cmd: "give %player% diamond 64"
+    chance: 10

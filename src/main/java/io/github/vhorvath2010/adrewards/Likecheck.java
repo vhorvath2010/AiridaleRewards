@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 public class Likecheck implements CommandExecutor {
 
@@ -24,8 +25,8 @@ public class Likecheck implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("likecheck")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                ArrayList<Player> claimed = ADRewards.instance.getClaimed();
-                if (claimed.contains(player)) {
+                ArrayList<UUID> claimed = ADRewards.instance.getClaimed();
+                if (claimed.contains(player.getUniqueId())) {
                     player.sendMessage(ChatColor.RED + "You've already claimed your reward!");
                     return false;
                 }
@@ -51,7 +52,8 @@ public class Likecheck implements CommandExecutor {
                                 Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
                             }
                         }
-                        claimed.add(player);
+                        claimed.add(player.getUniqueId());
+                        ADRewards.instance.saveData();
                     }
                     return true;
                 } catch (IOException e) {

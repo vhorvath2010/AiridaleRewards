@@ -8,13 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class ADRewards extends JavaPlugin {
 
     public static ADRewards instance;
-    private ArrayList<Player> claimed;
+    private ArrayList<UUID> claimed;
 
-    public ArrayList<Player> getClaimed() {
+    public ArrayList<UUID> getClaimed() {
         return claimed;
     }
 
@@ -40,8 +41,8 @@ public class ADRewards extends JavaPlugin {
         }
     }
 
-    private void saveData() throws IOException {
-        File file = new File("data.yml");
+    public void saveData() throws IOException {
+        File file = new File(getDataFolder() + "/data.yml");
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("data", claimed);
         configuration.save(file);
@@ -49,11 +50,11 @@ public class ADRewards extends JavaPlugin {
 
     private void loadDataFile() throws IOException, InvalidConfigurationException {
         claimed = new ArrayList<>();
-        File file = new File("data.yml");
+        File file = new File(getDataFolder() + "/data.yml");
         if (file.exists()) {
             YamlConfiguration configuration = new YamlConfiguration();
             configuration.load(file);
-            claimed = (ArrayList<Player>) configuration.get("data");
+            claimed = (ArrayList<UUID>) configuration.get("data");
         }
 
     }

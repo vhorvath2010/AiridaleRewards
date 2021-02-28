@@ -1,4 +1,5 @@
 # Each command under this section has a certain chance (out of 100) to fire. They are NOT mutually exclusive
+api-url: "https://api.namemc.com/server/play.airidale.net/likes?profile="
 rewards:
   1:
     cmd: "give %player% diamond 10"

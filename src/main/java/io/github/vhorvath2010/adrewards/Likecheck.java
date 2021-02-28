@@ -26,13 +26,19 @@ public class Likecheck implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 ArrayList<UUID> claimed = ADRewards.instance.getClaimed();
+                ArrayList<String> claimedIPs = ADRewards.instance.getClaimedIPs();
                 if (claimed.contains(player.getUniqueId())) {
                     player.sendMessage(ChatColor.RED + "You've already claimed your reward!");
                     return false;
                 }
+                if (claimedIPs.contains(player.getAddress().toString())) {
+                    player.sendMessage(ChatColor.RED + "A like from your IP address has already been claimed!");
+                    return false;
+                }
+                FileConfiguration config = ADRewards.instance.getConfig();
                 // Check if player voted
                 try {
-                    URL url = new URL("https://api.namemc.com/server/play.airidale.net/likes?profile=" + player.getUniqueId().toString());
+                    URL url = new URL(config.getString("api-url") + player.getUniqueId().toString());
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
                     InputStream input = con.getInputStream();
@@ -43,7 +49,6 @@ public class Likecheck implements CommandExecutor {
                     } else {
                         player.sendMessage(ChatColor.GREEN + "Thank you for liking the server!");
                         // Give rewards
-                        FileConfiguration config = ADRewards.instance.getConfig();
                         for (String section : config.getConfigurationSection("rewards").getKeys(false)) {
                             double chance = config.getDouble("rewards." + section + ".chance");
                             if (new Random().nextDouble() * 100 < chance) {
@@ -53,6 +58,7 @@ public class Likecheck implements CommandExecutor {
                             }
                         }
                         claimed.add(player.getUniqueId());
+                        claimedIPs.add(player.getAddress().toString());
                         ADRewards.instance.saveData();
                     }
                     return true;

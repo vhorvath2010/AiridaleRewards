@@ -14,9 +14,14 @@ public class ADRewards extends JavaPlugin {
 
     public static ADRewards instance;
     private ArrayList<UUID> claimed;
+    private ArrayList<String> claimedIPs;
 
     public ArrayList<UUID> getClaimed() {
         return claimed;
+    }
+
+    public ArrayList<String> getClaimedIPs() {
+        return claimedIPs;
     }
 
     @Override
@@ -45,6 +50,7 @@ public class ADRewards extends JavaPlugin {
         File file = new File(getDataFolder() + "/data.yml");
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("data", claimed);
+        configuration.set("ip-data", claimedIPs);
         configuration.save(file);
     }
 
@@ -55,6 +61,7 @@ public class ADRewards extends JavaPlugin {
             YamlConfiguration configuration = new YamlConfiguration();
             configuration.load(file);
             claimed = (ArrayList<UUID>) configuration.get("data");
+            claimedIPs = (ArrayList<String>) configuration.get("ip-data");
         }
 
     }

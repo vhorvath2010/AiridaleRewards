@@ -25,13 +25,14 @@ public class Likecheck implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("likecheck")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                ArrayList<UUID> claimed = ADRewards.instance.getClaimed();
+                ArrayList<String> claimed = ADRewards.instance.getClaimed();
                 ArrayList<String> claimedIPs = ADRewards.instance.getClaimedIPs();
-                if (claimed.contains(player.getUniqueId())) {
+                if (claimed.contains(player.getUniqueId().toString())) {
                     player.sendMessage(ChatColor.RED + "You've already claimed your reward!");
                     return false;
                 }
-                if (claimedIPs.contains(player.getAddress().toString())) {
+                String IP = player.getAddress().getHostString();
+                if (claimedIPs.contains(IP)) {
                     player.sendMessage(ChatColor.RED + "A like from your IP address has already been claimed!");
                     return false;
                 }
@@ -57,8 +58,8 @@ public class Likecheck implements CommandExecutor {
                                 Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
                             }
                         }
-                        claimed.add(player.getUniqueId());
-                        claimedIPs.add(player.getAddress().toString());
+                        claimed.add(player.getUniqueId().toString());
+                        claimedIPs.add(IP);
                         ADRewards.instance.saveData();
                     }
                     return true;

@@ -13,10 +13,10 @@ import java.util.UUID;
 public class ADRewards extends JavaPlugin {
 
     public static ADRewards instance;
-    private ArrayList<UUID> claimed;
+    private ArrayList<String> claimed;
     private ArrayList<String> claimedIPs;
 
-    public ArrayList<UUID> getClaimed() {
+    public ArrayList<String> getClaimed() {
         return claimed;
     }
 
@@ -31,6 +31,7 @@ public class ADRewards extends JavaPlugin {
             loadDataFile();
         } catch (IOException | InvalidConfigurationException e) {
             System.out.println("Could not load data");
+            e.printStackTrace();
         }
         getCommand("likecheck").setExecutor(new Likecheck());
         getCommand("ResetLikes").setExecutor(new ResetLikes());
@@ -56,12 +57,20 @@ public class ADRewards extends JavaPlugin {
 
     private void loadDataFile() throws IOException, InvalidConfigurationException {
         claimed = new ArrayList<>();
+        claimedIPs = new ArrayList<>();
         File file = new File(getDataFolder() + "/data.yml");
         if (file.exists()) {
+            System.out.println("Loaded File");
             YamlConfiguration configuration = new YamlConfiguration();
             configuration.load(file);
-            claimed = (ArrayList<UUID>) configuration.get("data");
-            claimedIPs = (ArrayList<String>) configuration.get("ip-data");
+            if (configuration.get("data") != null) {
+                claimed = (ArrayList<String>) configuration.get("data");
+                System.out.println("Loaded Data " + claimed.size());
+            }
+            if (configuration.get("ip-data") != null) {
+                claimedIPs = (ArrayList<String>) configuration.get("ip-data");
+                System.out.println("Loaded IP " + claimedIPs.size());
+            }
         }
 
     }
